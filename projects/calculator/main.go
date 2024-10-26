@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func calculator(firstChan <-chan int, secondChan <-chan int, stopChan <-chan struct{}) <-chan int {
+func calculator(firstChan <-chan int, secondChan <-chan int, stopChan <-chan int) <-chan int {
 	resultChan := make(chan int)
 
 	go func() {
@@ -25,7 +25,7 @@ func calculator(firstChan <-chan int, secondChan <-chan int, stopChan <-chan str
 func main() {
 	firstChan := make(chan int)
 	secondChan := make(chan int)
-	stopChan := make(chan struct{})
+	stopChan := make(chan int)
 
 	resultChan := calculator(firstChan, secondChan, stopChan)
 
@@ -40,7 +40,7 @@ func main() {
 	fmt.Println("Результат из secondChan (5 * 3):", <-resultChan)
 
 	go func() {
-		stopChan <- struct{}{}
+		stopChan <- 0
 	}()
 
 	// time.Sleep(1 * time.Second)
